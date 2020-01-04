@@ -14,6 +14,10 @@ Feel free to contact us if you have any questions.
 
 Our result has been published on [HotpotQA Leaderboard](https://hotpotqa.github.io/).
 
+## How to run ODQA
+Download checkpoint and place in appropriate folders.
+Run demo.py
+
 ## Requirements
 python 3, pytorch 0.4.1, boto3
 
