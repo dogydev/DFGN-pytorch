@@ -62,7 +62,6 @@ def mergeDict(dict1, dict2):
 
 if __name__ == '__main__':
 
-    ner_ = {'data': []}
     while True:
         #try:
 
@@ -78,8 +77,6 @@ if __name__ == '__main__':
 
                 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 
-                ner_data = get_ner(question, keywords, context1, title1)
-                ner_['data'].append(ner_data)
 
             if question == 'Q':
                 break
@@ -127,18 +124,6 @@ if __name__ == '__main__':
 
             print('short answer: ', out['answer']['5a8b57f25542995d1e6f1371'])
             print('long answer: ', context)
-            try:
-                f4 = open('ner_data', 'r')
-                dict2 = json.load(f4)
-            except:
-                pass
-
-            with open('ner_data', 'w') as f3:
-                try:
-                    json.dump(mergeDict(ner_data, dict2), f3)
-                except:
-                    json.dump(ner_data, f3)
-                f3.close()
         #except Exception as e:
 
             #print('short answer: ', 'Error')
