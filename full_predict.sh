@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-export INPUT_FILE=$1
-export OUTPUT_DIR=$2
+#!/usr/bin/env bash
+
+export INPUT_FILE=input.json
+export OUTPUT_DIR=dev
 
 mkdir work_dir/${OUTPUT_DIR}
 
@@ -29,8 +31,4 @@ python3.7 DFGN/text_to_tok_pack.py \
     --example_output=work_dir/${OUTPUT_DIR}/examples.pkl.gz \
     --feature_output=work_dir/${OUTPUT_DIR}/features.pkl.gz \
 
-python3.7 DFGN/create_graph.py \
-    --example_path=work_dir/${OUTPUT_DIR}/examples.pkl.gz \
-    --feature_path=work_dir/${OUTPUT_DIR}/features.pkl.gz \
-    --graph_path=work_dir/${OUTPUT_DIR}/graph.pkl.gz \
-    --query_entity_path=work_dir/${OUTPUT_DIR}/query_entities.json
+python3.7 predict.py
