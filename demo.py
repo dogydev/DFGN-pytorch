@@ -1,5 +1,3 @@
-from OpenNER.main import get_ner
-
 import os
 import yake
 import json
@@ -7,21 +5,21 @@ import nltk.data
 import wikipedia
 
 def keyword_extraction_new(question):
-    kw_extractor = yake.KeywordExtractor()
-    keywords = kw_extractor.extract_keywords(question)
+    nlp = spacy.load("en_core_web_sm")
+    other_pipes = [pipe for pipe in nlp.pipe_names if pipe != "ner"]
+    nlp.disable_pipes(*other_pipes)
 
-    key = []
+    tagger = OpenNER()
+    pred = tagger.predict(question)
 
-    for kw in keywords:
-        key.append(kw)
-    keys = key[0:3]
+    doc = nlp(question)
+    keys = []
 
-    final_keywords = []
-
-    for key in keys:
-        final_keywords.append(key[0])
-
-    return final_keywords
+    for ent in doc.ents:
+        print(ent.label_, ent.text)
+        if not ent.label_ == 'DATE' or ent.label_ == 'TIME' or ent.label_ == 'PERCENT' or ent.label_ == 'MONEY' or ent.label_ == 'QUANTITY' or ent.label_ == 'ORDINAL' or ent.label_ == 'CARDINAL':
+            keys.append(ent.text)
+    return keys
 
 def get_context(keyword):
     """r = Rake()
@@ -29,15 +27,13 @@ def get_context(keyword):
     scores = r.get_ranked_phrases()"""
 
     # print(scores)
+    contexts = ''
+    for key in keyword:
+        searches = wikipedia.search(key)
+        context = wikipedia.summary(searches[0])
+        contexts += context
 
-    searches = wikipedia.search(keyword)
-    context = wikipedia.summary(searches[0])
-    title = searches[0]
-
-    print(context)
-
-    return context, title
-
+    return contexts
 
 
 def mergeDict(dict1, dict2):
@@ -69,7 +65,7 @@ if __name__ == '__main__':
             if question != 'Q':
                 keywords = keyword_extraction_new(question)
 
-                context1, title1 = get_context(keywords[0])
+                context1, title1 = get_context(keywords)
                 #context2, title2 = get_context(keywords[1])
                 #context3, title3 = get_context(keywords[2])
 
