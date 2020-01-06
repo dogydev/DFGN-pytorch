@@ -9,8 +9,6 @@ def keyword_extraction_new(question):
     other_pipes = [pipe for pipe in nlp.pipe_names if pipe != "ner"]
     nlp.disable_pipes(*other_pipes)
 
-    tagger = OpenNER()
-    pred = tagger.predict(question)
 
     doc = nlp(question)
     keys = []
